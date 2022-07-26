@@ -23,7 +23,7 @@ const App = () => {
             e.preventDefault();
             setError('');
             setLoading(true);
-            const res = await fetch(`http://localhost:8080/whois?url=${url}`).then((res) => {
+            const res = await fetch(`https://whois-raghav.herokuapp.com/whois?url=${url}`).then((res) => {
                 if (res.status === 500) {
                     setError('Please provide a valid URL');
                     return defaultResult;
