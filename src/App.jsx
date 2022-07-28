@@ -26,7 +26,7 @@ const App = () => {
             setError('');
             setLoading(true);
             const res = await fetch(`${server}/whois?url=${url}`).then((res) => res.json());
-            console.log(res);
+            // console.log(res)
             if (res.error) {
                 setError(res.error);
                 setResult(defaultResult);
