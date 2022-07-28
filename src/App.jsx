@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Navbar from './Components/Navbar';
 import './App.css';
 
+// const server = 'http://localhost:3000';
+const server = 'https://whois-raghav.herokuapp.com';
 const defaultResult = {
     URL: '',
     Domain: '',
@@ -15,7 +17,7 @@ const defaultResult = {
 const App = () => {
     const [url, setUrl] = useState("");
     const [error, setError] = useState("");
-    const [result, setResult] = useState(defaultResult);
+    const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
@@ -23,13 +25,13 @@ const App = () => {
             e.preventDefault();
             setError('');
             setLoading(true);
-            const res = await fetch(`https://whois-raghav.herokuapp.com/whois?url=${url}`).then((res) => {
-                if (res.status === 500) {
-                    setError('Please provide a valid URL');
-                    return defaultResult;
-                } else return res.json();
-            });
-            setResult(res);
+            const res = await fetch(`${server}/whois?url=${url}`).then((res) => res.json());
+            console.log(res);
+            if (res.error) {
+                setError(res.error);
+                setResult(defaultResult);
+            } else
+                setResult(res);
             setLoading(false);
         } catch (err) {
             setError(err.msg);
@@ -58,6 +60,7 @@ const App = () => {
                     <h2 className="head">Domain Information</h2>
                     <div className={`error ${error ? '' : 'hide'}`}>{error}</div>
                     {getDomainDetails()}
+                    {/* <div style={{wordWrap: 'break-word'}}>{result}</div> */}
                 </div>
             </div>
         </>
